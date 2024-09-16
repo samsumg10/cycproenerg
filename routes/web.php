@@ -1,0 +1,44 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\MyApp;
+
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+
+Route::prefix(MyApp::ADMINS_SUBDIR)->middleware('auth:admin')->name('admin.')->group(function () {
+    Route::get('/', function () {
+        return redirect()->route('admin.home');
+    })->withoutMiddleware('auth:admin');
+    // Route::get('/home', [Admin\HomeController::class, 'index'])->name('home');
+
+});
+
+Route::prefix(MyApp::COMPANIES_SUBDIR)->middleware('auth:company')->name('company.')->group(function () {
+    Route::get('/', function () {
+        return redirect()->route('company.home');
+    })->withoutMiddleware('auth:company');
+    // Route::get('/home', [Company\HomeController::class, 'index'])->name('home');
+});
+
+
+Route::prefix(MyApp::EMPLOYEE_SUBDIR)->middleware('auth:client')->name('client.')->group(function () {
+    Route::get('/', function () {
+        return redirect()->route('client.home');
+    })->withoutMiddleware('auth:client');
+    // Route::get('/home', [Client\HomeController::class, 'index'])->name('home');
+});
