@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin as Admin;
+use App\Http\Controllers\Company as Company;
+use App\Http\Controllers\Employee as Employee;
 use App\MyApp;
 
 
@@ -32,6 +35,7 @@ Route::prefix(MyApp::COMPANIES_SUBDIR)->middleware('auth:company')->name('compan
     Route::get('/', function () {
         return redirect()->route('company.home');
     })->withoutMiddleware('auth:company');
+    Route::get('/home', [Company\CompanyController::class, 'index'])->name('home');
     // Route::get('/home', [Company\HomeController::class, 'index'])->name('home');
 });
 
