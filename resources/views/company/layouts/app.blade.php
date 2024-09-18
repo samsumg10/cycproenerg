@@ -1,4 +1,4 @@
-{{-- @props(['bodyClass']) --}}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,9 +24,9 @@
     <!-- CSS Files -->
     <link id="pagestyle" href="{{ asset('assets') }}/css/material-dashboard.css?v=3.0.0" rel="stylesheet" />
 </head>
-{{-- <body class="{{ $bodyClass }}"> --}}
+<body class="g-sidenav-show  bg-gray-100">
 
-<body>
+{{-- <body> --}}
     {{-- {{ $slot }} --}}
 
     @auth
@@ -41,6 +41,7 @@
     <script src="{{ asset('assets') }}/js/plugins/perfect-scrollbar.min.js"></script>
     <script src="{{ asset('assets') }}/js/plugins/smooth-scrollbar.min.js"></script>
     @stack('js')
+    @stack('dashboard')
     <script>
         var win = navigator.platform.indexOf('Win') > -1;
         if (win && document.querySelector('#sidenav-scrollbar')) {
