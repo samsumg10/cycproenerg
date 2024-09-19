@@ -36,6 +36,7 @@ Route::prefix(MyApp::COMPANIES_SUBDIR)->middleware('auth:company')->name('compan
         return redirect()->route('company.home');
     })->withoutMiddleware('auth:company');
     Route::get('/home', [Company\CompanyController::class, 'index'])->name('home');
+    Route::resource('client', Company\ClientController::class);
     // Route::get('/home', [Company\HomeController::class, 'index'])->name('home');
 });
 
