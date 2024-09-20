@@ -17,6 +17,14 @@ return new class extends Migration
             $table->string('tc_result')->nullable();
             $table->string('connection_result')->nullable();
             $table->string('external_installation_result')->nullable();
+            $table->boolean('rejected')->nullable();
+            $table->boolean('cancelled')->nullable();
+            $table->string('cancellation_reason')->nullable();
+            $table->boolean('observed_for_installer')->nullable();
+            $table->boolean('observed_for_concessionaire')->nullable();
+            $table->boolean('enabled')->nullable();
+            $table->date('test_date')->nullable();
+            $table->integer('attempt_number')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

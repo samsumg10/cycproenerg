@@ -21,6 +21,14 @@ return new class extends Migration
             $table->date('end_date')->nullable();
             $table->float('total_length')->nullable();
             $table->foreignId('inspector_id'); // Relación con inspectors
+            $table->date('scheduled_internal_installation_date')->nullable();
+            $table->date('internal_installation_start_date')->nullable();
+            $table->date('internal_installation_end_date')->nullable();
+            $table->date('acometida_installation_end_date')->nullable();
+            $table->date('scheduled_habilitation_date')->nullable();
+            $table->date('document_submission_date')->nullable();
+            $table->boolean('valve_approved')->nullable();
+            $table->float('nominal_valve_diameter')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

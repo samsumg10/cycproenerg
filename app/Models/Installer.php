@@ -5,17 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Inspector extends Model
+class Installer extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'document_type',
         'document_number',
         'name',
-        'cell_phone',
+        'gas_registration',
+        'phone'
     ];
 
-    // Relationship with Installations
     public function installations()
     {
         return $this->hasMany(Installation::class);

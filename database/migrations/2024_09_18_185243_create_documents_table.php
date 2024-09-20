@@ -20,6 +20,9 @@ return new class extends Migration
             $table->unsignedBigInteger('project_id'); // Relación con projects
             $table->date('approval_registration_date')->nullable();
             $table->date('contract_approval_date')->nullable();
+            $table->string('internal_property_code')->nullable();
+            $table->string('supply_number')->nullable();
+            $table->string('supply_contract_number')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
