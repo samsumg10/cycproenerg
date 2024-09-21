@@ -15,7 +15,8 @@
                     </a>
                     <div class="text-end pt-1">
                         <h4 class="mb-0 text-capitalize">Cargar Datos</h4>
-                        <p class="text-sm mb-0 text-capitalize">3,462</p>
+                        <p id="result-message" class="text-sm mb-0 text-capitalize">...</p>
+                        
 
                         <div class="progress" id="progress-bar-container" style="height: 25px; display: none;">
                             <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%;" id="progress-bar"></div>
@@ -106,6 +107,109 @@
         const progressBar = document.getElementById('progress-bar');
         const progressBarContainer = document.getElementById('progress-bar-container');
         const resultIcon = document.getElementById('result-icon');
+        const resultMessage = document.getElementById('result-message');
+        const titleElement = document.querySelector('h4.mb-0.text-capitalize');
+
+        // Evento cuando se hace clic en el ícono de Excel
+        uploadTrigger.addEventListener('click', function(event) {
+            event.preventDefault();
+            fileInput.click();
+        });
+
+        // Evento cuando se selecciona un archivo
+        fileInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                uploadExcel(file);
+            }
+        });
+
+        // Función para realizar una carga de archivo con seguimiento de progreso real
+        function uploadExcel(file) {
+            // Resetear la interfaz
+            resetUI();
+            
+            // Cambiar el título y mensaje durante la carga
+            titleElement.textContent = 'Cargando...';
+            resultMessage.textContent = 'Procesando...';
+
+            const xhr = new XMLHttpRequest();
+            const formData = new FormData();
+            formData.append('file', file);
+
+            xhr.upload.addEventListener('progress', function(event) {
+                if (event.lengthComputable) {
+                    const percentComplete = (event.loaded / event.total) * 100;
+                    progressBar.style.width = percentComplete + '%';
+                }
+            });
+
+            xhr.addEventListener('load', function() {
+                let response;
+                try {
+                    response = JSON.parse(xhr.responseText);
+                } catch (e) {
+                    handleError('Error al procesar la respuesta del servidor.');
+                    return;
+                }
+
+                if (xhr.status === 200 && response.success) {
+                    handleSuccess(response.message);
+                } else {
+                    handleError(response.message || 'Error al procesar el archivo.');
+                }
+            });
+
+            xhr.addEventListener('error', function() {
+                handleError('Error de conexión al servidor.');
+            });
+
+            xhr.addEventListener('timeout', function() {
+                handleError('La solicitud ha excedido el tiempo de espera.');
+            });
+
+            xhr.open('POST', '/company/change');
+            xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+            xhr.send(formData);
+        }
+
+        function resetUI() {
+            progressBar.style.width = '0%';
+            progressBar.classList.remove('bg-success', 'bg-danger');
+            progressBar.classList.add('bg-secondary');
+            progressBarContainer.style.display = 'block';
+            resultIcon.style.display = 'none';
+            titleElement.textContent = 'Cargar Datos';
+            resultMessage.textContent = '';
+        }
+
+        function handleSuccess(message) {
+            progressBar.classList.remove('bg-secondary');
+            progressBar.classList.add('bg-success');
+            resultIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="green" viewBox="0 0 48 48" width="48px" height="48px"><path d="M 24 4 C 12.972874 4 4 12.972874 4 24 C 4 35.027126 12.972874 44 24 44 C 35.027126 44 44 35.027126 44 24 C 44 12.972874 35.027126 4 24 4 z M 24 6 C 34.010184 6 42 13.989816 42 24 C 42 34.010184 34.010184 42 24 42 C 13.989816 42 6 34.010184 6 24 C 6 13.989816 13.989816 6 24 6 z M 20.792969 31.707031 L 12.792969 23.707031 L 14.207031 22.292969 L 20.792969 28.878906 L 33.792969 15.878906 L 35.207031 17.292969 L 20.792969 31.707031 z"/></svg>';
+            resultIcon.style.display = 'block';
+            titleElement.textContent = 'Datos Cargados';
+            resultMessage.textContent = message;
+        }
+
+        function handleError(message) {
+            progressBar.classList.remove('bg-secondary');
+            progressBar.classList.add('bg-danger');
+            resultIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="red" viewBox="0 0 48 48" width="48px" height="48px"><path d="M 24 4 C 12.972874 4 4 12.972874 4 24 C 4 35.027126 12.972874 44 24 44 C 35.027126 44 44 35.027126 44 24 C 44 12.972874 35.027126 4 24 4 z M 24 6 C 34.010184 6 42 13.989816 42 24 C 42 34.010184 34.010184 42 24 42 C 13.989816 42 6 34.010184 6 24 C 6 13.989816 13.989816 6 24 6 z M 16.585938 16.585938 L 15.171875 18 L 22.171875 25 L 15.171875 32 L 16.585938 33.414062 L 23.585938 26.414062 L 30.585938 33.414062 L 32 32 L 25 25 L 32 18 L 30.585938 16.585938 L 23.585938 23.585938 L 16.585938 16.585938 z"/></svg>';            resultIcon.style.display = 'block';
+            titleElement.textContent = 'Error al Cargar Datos';
+            resultMessage.textContent = message;
+        }
+    </script>
+    
+    
+
+    {{-- <script>
+        // Elementos del DOM
+        const uploadTrigger = document.getElementById('upload-trigger');
+        const fileInput = document.getElementById('file-input');
+        const progressBar = document.getElementById('progress-bar');
+        const progressBarContainer = document.getElementById('progress-bar-container');
+        const resultIcon = document.getElementById('result-icon');
         const errorMessage = document.getElementById('error-message');
     
         // Evento cuando se hace clic en el ícono de Excel
@@ -163,6 +267,6 @@
                 errorMessage.style.display = 'block';
             });
         }
-    </script>
+    </script> --}}
 
 @endsection
