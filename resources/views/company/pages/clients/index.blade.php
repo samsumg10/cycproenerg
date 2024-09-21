@@ -75,23 +75,66 @@
                         <table class="table align-items-center mb-0">
                             <thead>
                                 <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Companies</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                        Members</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Tipo de Documento</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        Nombre</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Budget</th>
+                                        Número de Solicitud</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Completion</th>
+                                        Número de Suministro</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Número de Contrato de Suministro</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @if(count($clientesConSolicitudes) > 0)
+                                    @foreach($clientesConSolicitudes as $cliente)
+                                        @if($cliente->solicitudes->isNotEmpty())
+                                            @foreach($cliente->solicitudes as $solicitud)
+                                                <tr>
+                                                    <td class="align-middle text-center text-sm">
+                                                        <span class="text-xs font-weight-bold">{{ $cliente->tipo_documento_identificacion }}</span>
+                                                    </td>
+                                                    <td class="align-middle text-center text-sm">
+                                                        <span class="text-xs font-weight-bold">{{ $cliente->nombre }}</span>
+                                                    </td>
+                                                    <td class="align-middle text-center text-sm">
+                                                        <span class="text-xs font-weight-bold">{{ $solicitud->numero_solicitud }}</span>
+                                                    </td>
+                                                    <td class="align-middle text-center text-sm">
+                                                        <span class="text-xs font-weight-bold">{{ $solicitud->numero_suministro ?? 'Sin suministro' }}</span>
+                                                    </td>
+                                                    <td class="align-middle text-center text-sm">
+                                                        <span class="text-xs font-weight-bold">{{ $solicitud->numero_contrato_suministro ?? 'Sin contrato' }}</span>
+                                                    </td>
+
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            <tr>
+                                                <td>{{ $cliente->tipo_documento_identificacion }}</td>
+                                                <td>{{ $cliente->nombre }}</td>
+                                                <td colspan="3">No hay solicitudes asociadas</td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td class="align-middle text-center text-sm" colspan="5">No hay solicitudes asociadas</td>
+                                    </tr>
+                                @endif
 
 
                             </tbody>
                         </table>
+                        <br>
+                        <div class="d-flex justify-content-center">
+                            {{ $clientesConSolicitudes->links('pagination::bootstrap-4') }}
+                        </div>
                     </div>
                 </div>
             </div>

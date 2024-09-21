@@ -89,18 +89,18 @@ class ProcessExcelJob implements ShouldQueue
             Log::info("Se agregaron $createdCount nuevos clientes y se actualizaron $updatedCount clientes existentes.");
 
             // Devolver un resumen del procesamiento si quieres mostrarlo al usuario
-            return response()->json([
-                'success' => true,
-                'message' => 'Se agregaron ' . $createdCount . ' nuevos clientes y se actualizaron ' . $updatedCount . ' clientes existentes.'
-            ]);
+            // return response()->json([
+            //     'success' => true,
+            //     'message' => 'Se agregaron ' . $createdCount . ' nuevos clientes y se actualizaron ' . $updatedCount . ' clientes existentes.'
+            // ]);
         } catch (\Exception $e) {
             // Si ocurre algún error, registrarlo en los logs de Laravel
             Log::error('Error procesando el archivo Excel: ' . $e->getMessage());
 
-            return response()->json([
-                'success' => false,
-                'message' => 'Error procesando el archivo Excel. Ver logs para más detalles.'
-            ], 500);
+            // return response()->json([
+            //     'success' => false,
+            //     'message' => 'Error procesando el archivo Excel. Ver logs para más detalles.'
+            // ], 500);
         }
     }
 }
