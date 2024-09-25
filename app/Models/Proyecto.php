@@ -14,7 +14,8 @@ class Proyecto extends Model
     protected $table = 'proyectos';
 
     protected $fillable = [
-        'tipo',
+        'tipo_proyecto',
+        'codigo_proyecto',
         'categoria',
         'sub_categoria',
         'codigo_objeto_conexion',

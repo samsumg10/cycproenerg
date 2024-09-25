@@ -16,9 +16,14 @@ use App\Models\Inspector;
 use App\Models\Project;
 use App\Models\Result;
 use App\Jobs\ProcessExcelJob;
+use App\Models\Concesionaria;
+use App\Models\Empresa;
+use App\Models\Proyecto;
 use App\Models\Prueba;
 use App\Models\Solicitante;
 use App\Models\Solicitud;
+use App\Models\Ubicacion;
+use PhpOffice\PhpSpreadsheet\Worksheet\Row;
 
 class ClientController extends Controller
 {
@@ -90,7 +95,6 @@ class ClientController extends Controller
                     // Procesamiento del cliente (crear o actualizar)
                     $dni = trim($row['H']);
                     $client = Solicitante::where('numero_documento_identificacion', $dni)->first();
-
                     if (!$client) {
                         $client = new Solicitante();
                         $client->numero_documento_identificacion = $dni;
@@ -107,7 +111,6 @@ class ClientController extends Controller
                     $client->correo_electronico = trim($row['L']);
                     $client->save();
 
-
                     $solicitud = Solicitud::where('solicitante_id', $client->id)->first();
 
                     if (!$solicitud) {
@@ -121,7 +124,6 @@ class ClientController extends Controller
                     $solicitud->numero_contrato_suministro = trim($row['D']) ?: null;
                     $solicitud->fecha_registro_aprobacion_portal = $this->parseDate(trim($row['E']));
                     $solicitud->fecha_aprobacion_contrato = $this->parseDate(trim($row['F']));
-
                     $solicitud->fecha_registro_solicitud_portal = $this->parseDate(trim($row['X']));
                     $solicitud->fecha_programada_instalacion_interna = $this->parseDate(trim($row['Y']));
                     $solicitud->fecha_inicio_instalacion_interna = $this->parseDate(trim($row['Z']));
@@ -129,12 +131,69 @@ class ClientController extends Controller
                     $solicitud->fecha_finalizacion_instalacion_acometida = $this->parseDate(trim($row['AB']));
                     $solicitud->fecha_programacion_habilitacion = $this->parseDate(trim($row['AC']));
                     $solicitud->fecha_entrega_documentos_concesionario = $this->parseDate(trim($row['AD']));
-                    $solicitud->tipo_proyecto = trim($row['AE']) ?: null;
-                    $solicitud->codigo_proyecto = trim($row['AF']) ?: null;
                     $solicitud->estado_solicitud = trim($row['CO']) ?: null;
                     $solicitud->ultima_accion_realizada = trim($row['CP']) ?: null;
                     $solicitud->save();
+
+                    $ubicacion = Ubicacion::where('solicitante_id', $client->id)->first();
+
+                    if (!$ubicacion) {
+                        $ubicacion = new Ubicacion();
+                        $ubicacion->solicitante_id = $client->id;
+                    }
+    
+                    $ubicacion->direccion = trim($row['M']) ?: null;
+                    $ubicacion->departamento = trim($row['N']) ?: null;
+                    $ubicacion->provincia = trim($row['O']) ?: null;
+                    $ubicacion->distrito = trim($row['P']) ?: null;
+                    $ubicacion->ubicacion = trim($row['Q']) ?: null;
+                    $ubicacion->codigo_manzana = trim($row['R']) ?: null;
+                    $ubicacion->nombre_malla = trim($row['S']) ?: null;
+                    $ubicacion->save();
+    
+                    $proyecto = Proyecto::where('solicitante_id', $client->id)->first();
+    
+                    if (!$proyecto) {
+                        $proyecto = new Proyecto();
+                        $proyecto->solicitante_id = $client->id;
+                    }
+    
+                    $proyecto->tipo_proyecto = trim($row['AE']) ?: null;
+                    $proyecto->codigo_proyecto = trim($row['AF']) ?: null;
+                    $proyecto->categoria = trim($row['CL']) ?: null;
+                    $proyecto->sub_categoria = trim($row['CM']) ?: null;
+                    $proyecto->codigo_objeto_conexion = trim($row['CN']) ?: null;
+                    $proyecto->save();
+    
+                    $empresa = Empresa::where('solicitante_id', $client->id)->first();
+    
+                    if (!$empresa) {
+                        $empresa = new Empresa();
+                        $empresa->solicitante_id = $client->id;
+                    }
+    
+                    $empresa->tipo_documento_identificacion = trim($row['AK']) ? : null;
+                    $empresa->numero_documento_identificacion = trim($row['AL']) ? : null;
+                    $empresa->nombre = trim($row['AM']) ? : null;
+                    $empresa->registro_gas_natural = trim($row['AN']) ? : null;
+                    $empresa->save();
+
+                    $concesionaria = Concesionaria::where('solicitante_id', $client->id)->first();
+    
+                    if (!$concesionaria) {
+                        $concesionaria = new Concesionaria();
+                        $concesionaria->solicitante_id = $client->id;
+                    }
+    
+                    $concesionaria->tipo_documento_identificacion = trim($row['AO']) ? : null;
+                    $concesionaria->numero_documento_identificacion = trim($row['AP']) ? : null;
+                    $concesionaria->nombre = trim($row['AQ']) ? : null;
+                    $concesionaria->save();
                 }
+
+
+
+
 
                 // Preparar el mensaje de respuesta
                 if ($hasErrors) {

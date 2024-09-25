@@ -88,6 +88,9 @@
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Número de Contrato de Suministro</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Acciones
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -106,7 +109,10 @@
                                                         <span class="text-xs font-weight-bold">{{ $solicitud->numero_solicitud }}</span>
                                                     </td>
                                                     <td class="align-middle text-center text-sm">
-                                                        <span class="text-xs font-weight-bold">{{ $solicitud->numero_suministro ?? 'Sin suministro' }}</span>
+                                                        <span class="text-xs font-weight-bold">{{ $solicitud->numero_suministro ?? 'Pendiende de Aprobacion' }}</span>
+                                                    </td>
+                                                    <td class="align-middle text-center text-sm">
+                                                        <span class="text-xs font-weight-bold">{{ $solicitud->numero_contrato_suministro ?? 'Sin contrato' }}</span>
                                                     </td>
                                                     <td class="align-middle text-center text-sm">
                                                         <span class="text-xs font-weight-bold">{{ $solicitud->numero_contrato_suministro ?? 'Sin contrato' }}</span>

@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('projects', function (Blueprint $table) {
+        Schema::create('concesionarias', function (Blueprint $table) {
             $table->id();
-            $table->string('project_code')->nullable();
-            $table->string('project_type')->nullable();
-            $table->string('project_category')->nullable();
-            $table->string('sub_project_category')->nullable();
+            $table->unsignedBigInteger('solicitante_id');
+            $table->string('tipo_documento_identificacion')->nullable();
+            $table->string('numero_documento_identificacion')->nullable();
+            $table->string('nombre')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('projects');
+        Schema::dropIfExists('concesionarias');
     }
 };

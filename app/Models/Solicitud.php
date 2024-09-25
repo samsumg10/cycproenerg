@@ -27,8 +27,6 @@ class Solicitud extends Model
         'fecha_finalizacion_instalacion_acometida',
         'fecha_programacion_habilitacion',
         'fecha_entrega_documentos_concesionario',
-        'tipo_proyecto',
-        'codigo_proyecto',
         'estado_solicitud',
         'ultima_accion_realizada',
         'solicitante_id',

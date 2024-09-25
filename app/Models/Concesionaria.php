@@ -6,25 +6,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Ubicacion extends Model
+class Concesionaria extends Model
 {
     use HasFactory;
     use SoftDeletes;
 
-    protected $table = 'ubicacions';
+    protected $table = 'concesionarias';
 
     protected $fillable = [
-        'direccion',
-        'departamento',
-        'provincia',
-        'distrito',
-        'ubicacion',
-        'codigo_manzana',
-        'nombre_malla',
+        'tipo_documento_identificacion',
+        'numero_documento_identificacion',
+        'nombre',
         'solicitante_id',
     ];
 
-    // Relación con solicitante
     public function solicitante()
     {
         return $this->belongsTo(Solicitante::class);

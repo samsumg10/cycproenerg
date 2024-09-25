@@ -27,17 +27,8 @@ return new class extends Migration
             $table->timestamp('fecha_finalizacion_instalacion_acometida')->nullable();
             $table->timestamp('fecha_programacion_habilitacion')->nullable();
             $table->timestamp('fecha_entrega_documentos_concesionario')->nullable();
-            $table->string('tipo_proyecto')->nullable();
-            $table->string('codigo_proyecto')->nullable();
             $table->string('estado_solicitud')->nullable();
             $table->string('ultima_accion_realizada')->nullable();
-            
-            // $table->unsignedBigInteger('solicitante_id')->nullable();
-            // $table->unsignedBigInteger('ubicacion_id')->nullable();
-            // $table->unsignedBigInteger('proyecto_id')->nullable();
-            // $table->unsignedBigInteger('empresa_id')->nullable();
-            // $table->unsignedBigInteger('instalacion_id')->nullable();
-            // $table->unsignedBigInteger('prueba_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
