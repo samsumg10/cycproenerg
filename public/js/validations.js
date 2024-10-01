@@ -21,7 +21,8 @@ function getData(url, id, modalID, dataTransform) {
         dataType: 'JSON',
         url: url + id + '/edit',
         success: function(response) {
-            fillForm(response, modalID);
+            var data = dataTransform ? dataTransform(response) : response ;
+            fillForm(data, modalID);
             $(modalID).modal('show');
         },
         error: function(error) {
@@ -31,7 +32,7 @@ function getData(url, id, modalID, dataTransform) {
 }
 
 function fillForm(data, modalID) {
-    
+
     for (const key in data) {
         if (data.hasOwnProperty(key) && key != 'password') {
             $(modalID + ' #' + key).val(data[key]);

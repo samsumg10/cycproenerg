@@ -13,8 +13,17 @@ class Tecnico extends Model
     protected $table = 'tecnicos';
 
     protected $fillable = [
+        'company_id',
         'nombre',
-        // 'numero_de_solicitud',
-        // 'numero_de_documento',
+        'dni',
+        'cargo',
     ];
+
+    public function solicitudes() {
+        return $this->Hasmany(SolicitudTecnico::class);
+    }
+
+    public function numeroSolicitudes() {
+        return $this->solicitudes()->count();
+    }
 }

@@ -21,8 +21,8 @@
         <form id="myForm" action="{{ route('company.technicals.store') }}" method="POST">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 id="title" class="modal-title text-inspinia text-primary">Registrar Técnico</h5>
-                    <button type="button" class="btn-close " data-bs-dismiss="modal" aria-label="Close" style="color:red; font-size:30px">
+                    <h5 id="title" class="modal-title text-inspinia text-info">Registrar Técnico</h5>
+                    <button type="button" class="btn-close text-info" data-bs-dismiss="modal" aria-label="Close" style=" font-size:30px">
                         <i class="bi bi-x"></i>
                     </button>
                 </div>
@@ -30,19 +30,29 @@
                     @csrf
                     <input id="tecnicoId" type="hidden" value="" name="tecnicoId">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <label for="nombre">Nombre:</label>
                             <input type="text" class="new-form-control" id="nombre" name="nombre" value="">
                             <div class="invalid-feedback" id="nombreError"></div>
                         </div>
-                        {{-- <div class="col-md-4">
-                            <label for="numero_de_documento">Número de documento:</label>
-                            <input  type="text" class="new-form-control" id="numero_de_documento" name="numero_de_documento"></input>
-                            <div class="invalid-feedback" id="numero_de_documentoError"></div>
-                        </div> --}}
+                        <div class="col-md-3">
+                            <label for="dni">DNI:</label>
+                            <input  type="text" class="new-form-control" id="dni" name="dni"></input>
+                            <div class="invalid-feedback" id="dniError"></div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="numero_de_documento">Rango:</label>
+                            <select class="new-form-control" name="cargo" id="cargo">
+                                <option value="" ></option>
+                                @foreach ($cargos as $cargo)
+                                    <option value="{{ $cargo }}">{{ $cargo }}</option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback" id="cargoError"></div>
+                        </div>
                     </div>
                     <div class="d-flex justify-content-center mt-2">
-                        <button id="submitBtn" type="submit" class="btn btn-primary mx-2 submitButton mt-3"></button>
+                        <button id="submitBtn" type="submit" class="btn btn-info mx-2 submitButton mt-3 px-3 py-2"></button>
                     </div>
                 </div>
             </div>

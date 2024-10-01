@@ -2,8 +2,8 @@
 <script>
     function confirmDelete(onConfirm) {
         Swal.fire({
-            title: '{{ __('company.are_you_sure') }}',
-            text: '{{ __('company.after_deletion') }}',
+            title: '¿Esta seguro?',
+            text: 'Una vez eliminado no podra recuperar el registro',
             icon: 'warning',
             showClass: {
                 backdrop: 'swal2-noanimation', // disable backdrop animation
@@ -17,8 +17,8 @@
             },
             showCancelButton: true,
             focusCancel: true,
-            confirmButtonText: '{{ __('company.delete') }}',
-            cancelButtonText: '{{ __('company.cancel') }}',
+            confirmButtonText: 'aceptar',
+            cancelButtonText: 'cancelar',
         }).then((result) => {
             if (result.isConfirmed && typeof onConfirm == 'function') {
                 try {

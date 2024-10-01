@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Company;
 use App\Http\Controllers\Controller;
 use App\Models\Tecnico;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class TecnicoController extends Controller
@@ -12,8 +13,9 @@ class TecnicoController extends Controller
 
     public function index() {
         
-        $tecnicos = Tecnico::orderBy('id', 'desc')->paginate(10);
-        return view('company.pages.technicals.index', compact('tecnicos') );
+        $tecnicos = Tecnico::where('company_id', Auth::user()->id)->orderBy('id', 'desc')->paginate(10);
+        $cargos = ['Supervisor', 'empleado'];
+        return view('company.pages.tecnicos.index', compact('tecnicos', 'cargos') );
     }
     
     public function store(Request $request)
@@ -22,8 +24,9 @@ class TecnicoController extends Controller
         $tecnicoId = $request->tecnicoId;
 
         $validator = Validator::make($request->all(), [
-            'nombre' => 'required', 
-            // 'numero_de_documento' => 'required|numeric',
+            'nombre' => 'required|max:255', 
+            'dni' => 'required',
+            'cargo' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -37,7 +40,8 @@ class TecnicoController extends Controller
 
             $tecnico->update([
                 'nombre' => $request->nombre,
-                'numer_de_documento' => $request->numer_de_documento,
+                'dni' => $request->dni,
+                'cargo' => $request->cargo,
             ]);
             session()->flash('message', __('Actualización éxitosa') );
             return response()->json(['redirect' => route('company.technicals.index')]);
@@ -45,8 +49,10 @@ class TecnicoController extends Controller
         } else {
 
             $tecnico = Tecnico::create([
+                'company_id' => Auth::user()->id,
                 'nombre' => $request->nombre,
-                'numer_de_documento' => $request->numer_de_documento,
+                'dni' => $request->dni,
+                'cargo' => $request->cargo,
             ]);
 
             session()->flash('message', __('Registro éxitoso') );
