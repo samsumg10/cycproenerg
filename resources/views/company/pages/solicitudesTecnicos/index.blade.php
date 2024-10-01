@@ -68,6 +68,7 @@
                                             </tr>
                                         @endforeach
                                     @else
+                                    
                                         <tr>
                                             <td class="align-middle text-center text-sm" colspan="5">No existen solicitudes registradas
                                         </tr>
